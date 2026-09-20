@@ -34,11 +34,16 @@ jobs:
       - name: ⚙️ Prebuild Android
         run: npx expo prebuild --platform android --clean
 
+      - name: 🔧 Set Kotlin 1.9.25 Compatibility
+        run: |
+          echo "android.kotlinVersion=1.9.25" >> android/gradle.properties
+          echo "kotlinVersion=1.9.25" >> android/gradle.properties
+
       - name: 🔨 Build Android APK
         working-directory: android
         run: |
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
+          ./gradlew assembleDebug -Pandroid.kotlinVersion=1.9.25 -PkotlinVersion=1.9.25 --no-daemon
 
       - name: 🚀 Upload APK Artifact
         uses: actions/upload-artifact@v4
